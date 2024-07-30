@@ -1,10 +1,11 @@
 <?php
 require('function.php');
 require('Entity/todo.php');
-// TODO一覧を取得
+
+// Todo一覧を取得
 $todos = getTodos();
 
-// タスクを追加
+// Todoを追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['task'])) {
 
     // Todoオブジェクトをインスタンス化
@@ -13,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['task'])) {
     header('Location: ' . $_SERVER['PHP_SELF']);
 }
 
-// タスクの完了状態を切り替え
+// Todoの完了状態を切り替え
 if (isset($_GET['toggle'])) {
     $id = $_GET['toggle'];
     $is_completed = $_GET['is_completed'];
@@ -23,6 +24,12 @@ if (isset($_GET['toggle'])) {
         if (!validateToggleComplete($id, $is_completed)) {
             throw new InvalidArgumentException();
         }
+
+        // 更新対象のTodoの存在チェック
+        if (!validateExistTodo($id)) {
+            throw new InvalidArgumentException();
+        }
+
         // 完了状態の切り替え
         toggleComplated($id, $is_completed);
     } catch (InvalidArgumentException $e) {
@@ -32,7 +39,7 @@ if (isset($_GET['toggle'])) {
     }
 }
 
-// タスクを削除
+// Todoを削除
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     try {
@@ -40,6 +47,12 @@ if (isset($_GET['delete'])) {
         if (!validateDeleteTodo($id)) {
             throw new InvalidArgumentException();
         }
+
+        // 削除対象のTodoの存在チェック
+        if (!validateExistTodo($id)) {
+            throw new InvalidArgumentException();
+        }
+
         // 削除
         deleteTodo($id);
     } catch (InvalidArgumentException $e) {
@@ -75,7 +88,7 @@ if (isset($_GET['delete'])) {
                 <li class="<?php echo $todo['is_completed'] ? 'completed' : ''; ?>">
                     <span class="task"><?php echo $todo['task']; ?></span>
                     <div class="actions">
-                        <a href="?toggle=<?php echo $todo['id']; ?>&is_completed=<?php echo 3; ?>" class="toggle"><?php echo $todo['is_completed'] ? '✓' : '○'; ?></a>
+                        <a href="?toggle=<?php echo $todo['id']; ?>&is_completed=<?php echo $todo['is_completed']; ?>" class="toggle"><?php echo $todo['is_completed'] ? '✓' : '○'; ?></a>
                         <a href="?delete=<?php echo $todo['id']; ?>" class="delete">×</a>
                     </div>
                 </li>

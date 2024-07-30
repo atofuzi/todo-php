@@ -24,7 +24,35 @@ function debug($str)
 }
 
 /**
- * TODOリスト一覧の取得
+ * Todoの取得
+ * @param int $id 取得対象のTodoのID
+ *
+ * @return array
+ */
+function getTodo(int $id): array
+{
+    try {
+        $dbh = dbConnect();
+        $sql = 'SELECT * FROM todos WHERE id = :id';
+        $data = [
+            ':id' => $id
+        ];
+
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result : [];
+        } else {
+            throw new Exception("SQLエラー " . $sql);
+        }
+    } catch (Exception $e) {
+        error_log('エラー発生:' . $e->getMessage());
+    }
+}
+
+/**
+ * Todoリスト一覧の取得
  *
  * @return array
  */
@@ -47,9 +75,9 @@ function getTodos(): array
 }
 
 /**
- * TODOリストの保存
- * @param Todo $task
+ * Todoリストの保存
  * 
+ * @param String $task
  */
 function saveTodo(Todo $todo): void
 {
@@ -68,9 +96,9 @@ function saveTodo(Todo $todo): void
 }
 
 /**
- * TODOリストの削除
- * @param integer $id
+ * Todoの削除
  * 
+ * @param int $id
  */
 function deleteTodo($id): void
 {
@@ -87,10 +115,10 @@ function deleteTodo($id): void
 }
 
 /**
- * TODOリストの完了・未完了切り替え
- * @param integer $id
- * @param bool $is_completed
+ * Todoの完了・未完了切り替え
  * 
+ * @param int $id
+ * @param bool $is_completed
  */
 function toggleComplated($id, $is_completed): void
 {
@@ -117,24 +145,39 @@ function toggleComplated($id, $is_completed): void
  *
  * @param mixed $id
  * @param mixed $is_completed
- * @return boolean
+ * @return bool
  */
 function validateToggleComplete($id, $is_completed): bool
 {
+    // クエリパラメータの場合、数値文字列のためis_numericを使用
     if (!is_numeric($id)) return false;
+    if (!is_numeric($is_completed)) return false;
+
     // NOTE: is_completedには0か1以外の数値が入ってくるはずがないため、そのチェックを行なっている
-    if (!($is_completed === 0) || !($is_completed === 1)) return false;
+    // 数値文字列のため、厳密比較を行うためにint型にキャストしている
+    if ((int)$is_completed !== 0 && (int)$is_completed !== 1) return false;
     return true;
 }
 
 /**
- * タスク削除時のパラメータのバリデーションチェック
+ * Todo削除時のパラメータのバリデーションチェック
  *
  * @param mixed $id
- * @return boolean
+ * @return bool
  */
 function validateDeleteTodo($id): bool
 {
     if (!is_numeric($id)) return false;
     return true;
+}
+
+/**
+ * Todoの存在チェック
+ *
+ * @param int $id チェック対象のTodoのID
+ * @return bool
+ */
+function validateExistTodo(int $id): bool
+{
+    return !empty(getTodo($id)) ? true : false;
 }
