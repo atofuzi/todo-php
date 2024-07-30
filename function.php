@@ -52,7 +52,7 @@ function getTodo(int $id): array
 }
 
 /**
- * TODOリスト一覧の取得
+ * Todoリスト一覧の取得
  *
  * @return array
  */
@@ -75,9 +75,9 @@ function getTodos(): array
 }
 
 /**
- * TODOリストの保存
- * @param String $task
+ * Todoリストの保存
  * 
+ * @param String $task
  */
 function saveTodo($task): void
 {
@@ -96,9 +96,9 @@ function saveTodo($task): void
 }
 
 /**
- * TODOリストの削除
- * @param integer $id
+ * Todoの削除
  * 
+ * @param int $id
  */
 function deleteTodo($id): void
 {
@@ -115,10 +115,10 @@ function deleteTodo($id): void
 }
 
 /**
- * TODOリストの完了・未完了切り替え
- * @param integer $id
- * @param bool $is_completed
+ * Todoの完了・未完了切り替え
  * 
+ * @param int $id
+ * @param bool $is_completed
  */
 function toggleComplated($id, $is_completed): void
 {
@@ -145,7 +145,7 @@ function toggleComplated($id, $is_completed): void
  *
  * @param mixed $id
  * @param mixed $is_completed
- * @return boolean
+ * @return bool
  */
 function validateToggleComplete($id, $is_completed): bool
 {
@@ -160,10 +160,10 @@ function validateToggleComplete($id, $is_completed): bool
 }
 
 /**
- * タスク削除時のパラメータのバリデーションチェック
+ * Todo削除時のパラメータのバリデーションチェック
  *
  * @param mixed $id
- * @return boolean
+ * @return bool
  */
 function validateDeleteTodo($id): bool
 {
