@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Todoのエンティティクラス
+ * 
+ * Todoに関係するプロパティー・およびメソッドを持つ
+ */
 class Todo
 {
     private int|null $id;
