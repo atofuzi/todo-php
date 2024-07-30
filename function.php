@@ -94,7 +94,6 @@ function deleteTodo($id): void
  */
 function toggleComplated($id, $is_completed): void
 {
-    var_dump((bool)$is_completed);
     try {
         $dbh = dbConnect();
         $sql = 'UPDATE todos SET is_completed = :is_completed, updated_at = :updated_at WHERE id = :id';
@@ -107,4 +106,35 @@ function toggleComplated($id, $is_completed): void
     } catch (Exception $e) {
         error_log('エラー発生:' . $e->getMessage());
     }
+}
+
+
+//================================
+// バリデーションメソッド
+//================================
+/**
+ * 完了状態更新時のパラメータのバリデーションチェック
+ *
+ * @param mixed $id
+ * @param mixed $is_completed
+ * @return boolean
+ */
+function validateToggleComplete($id, $is_completed): bool
+{
+    if (!is_numeric($id)) return false;
+    // NOTE: is_completedには0か1以外の数値が入ってくるはずがないため、そのチェックを行なっている
+    if (!($is_completed === 0) || !($is_completed === 1)) return false;
+    return true;
+}
+
+/**
+ * タスク削除時のパラメータのバリデーションチェック
+ *
+ * @param mixed $id
+ * @return boolean
+ */
+function validateDeleteTodo($id): bool
+{
+    if (!is_numeric($id)) return false;
+    return true;
 }
