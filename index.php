@@ -1,17 +1,17 @@
 <?php
 require('function.php');
 
-// TODO一覧を取得
+// Todo一覧を取得
 $todos = getTodos();
 
-// タスクを追加
+// Todoを追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['task'])) {
     $todo = htmlspecialchars($_POST['task']);
     saveTodo($todo);
     header('Location: ' . $_SERVER['PHP_SELF']);
 }
 
-// タスクの完了状態を切り替え
+// Todoの完了状態を切り替え
 if (isset($_GET['toggle'])) {
     $id = $_GET['toggle'];
     $is_completed = $_GET['is_completed'];
@@ -20,7 +20,7 @@ if (isset($_GET['toggle'])) {
     header('Location: ' . $_SERVER['PHP_SELF']);
 }
 
-// タスクを削除
+// Todoを削除
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     // TODO: バリデーション
