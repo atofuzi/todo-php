@@ -24,6 +24,34 @@ function debug($str)
 }
 
 /**
+ * Todoの取得
+ * @param int $id 取得対象のTodoのID
+ *
+ * @return array
+ */
+function getTodo(int $id): array
+{
+    try {
+        $dbh = dbConnect();
+        $sql = 'SELECT * FROM todos WHERE id = :id';
+        $data = [
+            ':id' => $id
+        ];
+
+        $stmt = queryPost($dbh, $sql, $data);
+
+        if ($stmt) {
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? $result : [];
+        } else {
+            throw new Exception("SQLエラー " . $sql);
+        }
+    } catch (Exception $e) {
+        error_log('エラー発生:' . $e->getMessage());
+    }
+}
+
+/**
  * TODOリスト一覧の取得
  *
  * @return array
@@ -137,4 +165,15 @@ function validateDeleteTodo($id): bool
 {
     if (!is_numeric($id)) return false;
     return true;
+}
+
+/**
+ * Todoの存在チェック
+ *
+ * @param int $id チェック対象のTodoのID
+ * @return bool
+ */
+function validateExistTodo(int $id): bool
+{
+    return !empty(getTodo($id)) ? true : false;
 }

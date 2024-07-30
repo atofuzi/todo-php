@@ -21,6 +21,12 @@ if (isset($_GET['toggle'])) {
         if (!validateToggleComplete($id, $is_completed)) {
             throw new InvalidArgumentException();
         }
+
+        // 更新対象のタスクの存在チェック
+        if (!validateExistTodo($id)) {
+            throw new InvalidArgumentException();
+        }
+
         // 完了状態の切り替え
         toggleComplated($id, $is_completed);
     } catch (InvalidArgumentException $e) {
@@ -38,6 +44,12 @@ if (isset($_GET['delete'])) {
         if (!validateDeleteTodo($id)) {
             throw new InvalidArgumentException();
         }
+
+        // 削除対象のタスクの存在チェック
+        if (!validateExistTodo($id)) {
+            throw new InvalidArgumentException();
+        }
+
         // 削除
         deleteTodo($id);
     } catch (InvalidArgumentException $e) {
@@ -73,7 +85,7 @@ if (isset($_GET['delete'])) {
                 <li class="<?php echo $todo['is_completed'] ? 'completed' : ''; ?>">
                     <span class="task"><?php echo $todo['task']; ?></span>
                     <div class="actions">
-                        <a href="?toggle=<?php echo $todo['id']; ?>&is_completed=<?php echo 3; ?>" class="toggle"><?php echo $todo['is_completed'] ? '✓' : '○'; ?></a>
+                        <a href="?toggle=<?php echo $todo['id']; ?>&is_completed=<?php echo $todo['is_completed']; ?>" class="toggle"><?php echo $todo['is_completed'] ? '✓' : '○'; ?></a>
                         <a href="?delete=<?php echo $todo['id']; ?>" class="delete">×</a>
                     </div>
                 </li>
