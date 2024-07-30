@@ -16,16 +16,47 @@ if (isset($_GET['toggle'])) {
     $id = $_GET['toggle'];
     $is_completed = $_GET['is_completed'];
 
-    toggleComplated($id, $is_completed);
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    try {
+        // パラメータのバリデーションチェック
+        if (!validateToggleComplete($id, $is_completed)) {
+            throw new InvalidArgumentException();
+        }
+
+        // 更新対象のTodoの存在チェック
+        if (!validateExistTodo($id)) {
+            throw new InvalidArgumentException();
+        }
+
+        // 完了状態の切り替え
+        toggleComplated($id, $is_completed);
+    } catch (InvalidArgumentException $e) {
+        debug("パラメータの値が不正");
+    } finally {
+        header('Location: ' . $_SERVER['PHP_SELF']);
+    }
 }
 
 // Todoを削除
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
-    // TODO: バリデーション
-    deleteTodo($id);
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    try {
+        // クエリパラメータのバリデーションチェック
+        if (!validateDeleteTodo($id)) {
+            throw new InvalidArgumentException();
+        }
+
+        // 削除対象のTodoの存在チェック
+        if (!validateExistTodo($id)) {
+            throw new InvalidArgumentException();
+        }
+
+        // 削除
+        deleteTodo($id);
+    } catch (InvalidArgumentException $e) {
+        debug("パラメータの値が不正");
+    } finally {
+        header('Location: ' . $_SERVER['PHP_SELF']);
+    }
 }
 ?>
 
@@ -54,7 +85,7 @@ if (isset($_GET['delete'])) {
                 <li class="<?php echo $todo['is_completed'] ? 'completed' : ''; ?>">
                     <span class="task"><?php echo $todo['task']; ?></span>
                     <div class="actions">
-                        <a href="?toggle=<?php echo $todo['id']; ?>&is_completed=<?php echo $todo['is_completed'] ?>" class="toggle"><?php echo $todo['is_completed'] ? '✓' : '○'; ?></a>
+                        <a href="?toggle=<?php echo $todo['id']; ?>&is_completed=<?php echo $todo['is_completed']; ?>" class="toggle"><?php echo $todo['is_completed'] ? '✓' : '○'; ?></a>
                         <a href="?delete=<?php echo $todo['id']; ?>" class="delete">×</a>
                     </div>
                 </li>
