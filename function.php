@@ -149,9 +149,13 @@ function toggleComplated($id, $is_completed): void
  */
 function validateToggleComplete($id, $is_completed): bool
 {
+    // クエリパラメータの場合、数値文字列のためis_numericを使用
     if (!is_numeric($id)) return false;
+    if (!is_numeric($is_completed)) return false;
+
     // NOTE: is_completedには0か1以外の数値が入ってくるはずがないため、そのチェックを行なっている
-    if (!($is_completed === 0) || !($is_completed === 1)) return false;
+    // 数値文字列のため、厳密比較を行うためにint型にキャストしている
+    if ((int)$is_completed !== 0 && (int)$is_completed !== 1) return false;
     return true;
 }
 
