@@ -79,13 +79,13 @@ function getTodos(): array
  * 
  * @param String $task
  */
-function saveTodo($task): void
+function saveTodo(Todo $todo): void
 {
     try {
         $dbh = dbConnect();
         $sql = 'INSERT INTO todos (task, created_at, updated_at) VALUE (:task, :created_at, :updated_at)';
         $data = [
-            ':task' => $task,
+            ':task' => $todo->getTask(),
             ':created_at' => date('Y-m-d H:i:s'),
             ':updated_at' => date('Y-m-d H:i:s'),
         ];

@@ -1,12 +1,15 @@
 <?php
 require('function.php');
+require('Entity/todo.php');
 
 // Todo一覧を取得
 $todos = getTodos();
 
 // Todoを追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['task'])) {
-    $todo = htmlspecialchars($_POST['task']);
+
+    // Todoオブジェクトをインスタンス化
+    $todo = new Todo(null, $_POST['task'], true);
     saveTodo($todo);
     header('Location: ' . $_SERVER['PHP_SELF']);
 }
