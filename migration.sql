@@ -1,0 +1,8 @@
+CREATE TABLE `todo_app`.`todos`(
+	`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'TODOのID',
+	`task` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'タスク内容',
+	`is_completed` BOOLEAN NOT NULL DEFAULT FALSE COMMENT '完了・未完了フラグ（0:未完了 1:完了）',
+	`created_at` TIMESTAMP NULL DEFAULT NULL COMMENT '作成日時',
+	`updated_at` TIMESTAMP NULL DEFAULT NULL COMMENT '登録日時',
+	PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARSET=utf8mb4 COLLATE utf8mb4_unicode_ci;
