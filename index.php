@@ -2,31 +2,32 @@
 require('function.php');
 
 // Todo一覧を取得
-$todos = getTodos();
+// $todos = getTodos();
+// debug($_POST['age']);
+// debug($_POST['name']);
+// // Todoを追加
+// if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['task'])) {
+//     $todo = htmlspecialchars($_POST['task']);
+//     saveTodo($todo);
+//     header('Location: ' . $_SERVER['PHP_SELF']);
+// }
 
-// Todoを追加
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['task'])) {
-    $todo = htmlspecialchars($_POST['task']);
-    saveTodo($todo);
-    header('Location: ' . $_SERVER['PHP_SELF']);
-}
+// // Todoの完了状態を切り替え
+// if (isset($_GET['toggle'])) {
+//     $id = $_GET['toggle'];
+//     $is_completed = $_GET['is_completed'];
 
-// Todoの完了状態を切り替え
-if (isset($_GET['toggle'])) {
-    $id = $_GET['toggle'];
-    $is_completed = $_GET['is_completed'];
+//     toggleComplated($id, $is_completed);
+//     header('Location: ' . $_SERVER['PHP_SELF']);
+// }
 
-    toggleComplated($id, $is_completed);
-    header('Location: ' . $_SERVER['PHP_SELF']);
-}
-
-// Todoを削除
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    // TODO: バリデーション
-    deleteTodo($id);
-    header('Location: ' . $_SERVER['PHP_SELF']);
-}
+// // Todoを削除
+// if (isset($_GET['delete'])) {
+//     $id = $_GET['delete'];
+//     // TODO: バリデーション
+//     deleteTodo($id);
+//     header('Location: ' . $_SERVER['PHP_SELF']);
+// }
 ?>
 
 
@@ -42,9 +43,14 @@ if (isset($_GET['delete'])) {
 
 <body>
     <div class="container">
-        <h1>Todo リスト</h1>
-
+        <h1>火災保険申込フォーム</h1>
         <form method="post" action="">
+            <input type="text" name="name" placeholder="お名前"  value="<?php echo $_POST["name"]?>">
+            <input type="text" name="age" placeholder="年齢" value="<?php echo $_POST["age"]?>">
+            <input type="text" name="fire-type" placeholder="申込商品名" value="<?php echo $_POST["fire-type"]?>">
+            <input type="submit" value="送信">
+        </form>
+        <!-- <form method="post" action="">
             <input type="text" name="task" placeholder="新しいタスクを入力" required>
             <input type="submit" value="追加">
         </form>
@@ -59,7 +65,7 @@ if (isset($_GET['delete'])) {
                     </div>
                 </li>
             <?php endforeach; ?>
-        </ul>
+        </ul> -->
     </div>
 </body>
 
