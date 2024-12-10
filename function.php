@@ -94,7 +94,6 @@ function deleteTodo($id): void
  */
 function toggleComplated($id, $is_completed): void
 {
-    var_dump((bool)$is_completed);
     try {
         $dbh = dbConnect();
         $sql = 'UPDATE todos SET is_completed = :is_completed, updated_at = :updated_at WHERE id = :id';

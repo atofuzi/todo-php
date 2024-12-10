@@ -1,1 +1,3 @@
 php.log
+docker/mysql/data
+docker/mysql/.cahce

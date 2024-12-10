@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+    web:
+        build:
+            context: .
+            dockerfile: ./docker/php/Dockerfile
+        container_name: "php-app"
+        volumes:
+            - "./:/var/www/html"
+        ports:
+            - "8001:80"
+        depends_on:
+            - mysql
+    mysql:
+        platform: linux/x86_64
+        image: mysql:8.0
+        volumes:
+            - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ./docker/mysql/data:/var/lib/mysql
+        environment:
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+            - MYSQL_DATABASE=todo_app
+            - MYSQL_USER=test_user
+            - MYSQL_PASSWORD=test_password
+            - TZ=Asia/Tokyo
+        ports:
+            - "4306:3306"
+        container_name: todo-mysql

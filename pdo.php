@@ -8,7 +8,10 @@
 function dbConnect(): \PDO
 {
     //DBへの接続準備
-    $dsn = 'mysql:dbname=todo_app;host=localhost;charset=utf8';
+    // MAMPの場合
+    // $dsn = 'mysql:dbname=todo_app;host=localhost;charset=utf8';
+    // Dockerの場合
+    $dsn = 'mysql:dbname=todo_app;host=mysql;charset=utf8';
     $user = 'root';
     $password = '';
     $options = array(
